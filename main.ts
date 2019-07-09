@@ -58,20 +58,23 @@ try {
   // });
 
   const f = fs.readFileSync('./config/config.json');
-  const config = JSON.parse(f);
+  const videoconfig = JSON.parse(f);
 
   const start = async () => {
-    const nms = new NodeMediaServer(config);
+    const nms = new NodeMediaServer(videoconfig);
     nms.run();
     console.log('start');
   };
 
-  // start();
+  start();
 
-  // ipcMain.on('getplayerconfig', (event) => {
-  //   const playerconfig = JSON.parse(fs.readFileSync('./config/playerconfig.json'));
-  //   event.reply('setplayerconfig', playerconfig);
-  // });
+  ipcMain.on('getplayerconfig', (event) => {
+    const playerconfig = JSON.parse(fs.readFileSync('./config/playerconfig.json'));
+    event.reply('setplayerconfig', playerconfig);
+  });
+  ipcMain.on('getvideoconfig', (event) => {
+    event.reply('setvideoconfig', videoconfig);
+  });
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.

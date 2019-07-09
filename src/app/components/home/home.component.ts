@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ipcRenderer} from 'electron';
 import DPlayer from 'dplayer';
 
@@ -7,34 +7,18 @@ import DPlayer from 'dplayer';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   constructor() {
   }
 
   rownum = 4;
   colnum = 4;
+  layoutcache = 16;
   row = [...Array(4)];
   col = [...Array(4)];
 
-  task = [
-    {app: 'mv', name: 'haku0'},
-    {app: 'mv', name: 'haku1'},
-    {app: 'mv', name: 'haku2'},
-    {app: 'mv', name: 'haku3'},
-    {app: 'mv', name: 'haku4'},
-    {app: 'mv', name: 'haku5'},
-    {app: 'mv', name: 'haku6'},
-    {app: 'mv', name: 'haku7'},
-    {app: 'mv', name: 'haku8'},
-    {app: 'mv', name: 'haku9'},
-    {app: 'mv', name: 'haku10'},
-    {app: 'mv', name: 'haku11'},
-    {app: 'mv', name: 'haku12'},
-    {app: 'mv', name: 'haku13'},
-    {app: 'mv', name: 'haku14'},
-    {app: 'mv', name: 'haku15'},
-  ];
+  tasks = [];
 
   // @ViewChild('dplayer', {static: true}) dplayer: ElementRef;
   // @ViewChild('dplayer2', {static: true}) dplayer2: ElementRef;
@@ -49,13 +33,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   dp: DPlayer[] = [];
 
   ngOnInit() {
-    // ipcRenderer.send('getplayerconfig');
-    //
-    // ipcRenderer.on('setplayerconfig', (eveng, arg) => {
-    //   console.log(arg);
-    //   this.row = [...Array(arg.row)];
-    //   this.col = [...Array(arg.col)];
-    // });
+    ipcRenderer.send('getplayerconfig');
+    ipcRenderer.send('getvideoconfig');
+
+    ipcRenderer.on('setplayerconfig', (eveng, arg) => {
+      // console.log(arg);
+      this.row = [...Array(arg.row)];
+      this.col = [...Array(arg.col)];
+    });
+    ipcRenderer.on('setvideoconfig', (eveng, arg) => {
+      this.tasks = arg.relay.tasks;
+      console.log(this.tasks);
+      this.initPlayer();
+    });
     // this.dp = new DPlayer({
     //   container: this.dplayer.nativeElement,
     //   // live: true,
@@ -107,13 +97,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   setLayout() {
     this.row = [...Array(this.rownum)];
     this.col = [...Array(this.colnum)];
-    this.initPlayer();
+    // this.initPlayer();
     // console.log(this.dp);
   }
 
   initPlayer() {
     this.dp = [];
     this.dplayer.forEach((el: ElementRef, index) => {
+      if (index < this.tasks.length) {
       const player = new DPlayer({
           container: el.nativeElement,
           live: true,
@@ -122,22 +113,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
           video: {
             // url: 'https://api.dogecloud.com/player/get.flv?vcode=5ac682e6f8231991&userId=17&ext=.flv',
             // url: 'ws://localhost:8000/mv/hatsuyuki.flv',
-            url: '/assets/hatsuyuki.mp4',
-            // url: this.baseurl + this.task[index].app + '/' + this.task[index].name + '.flv',
+            // url: '/assets/hatsuyuki.mp4',
+            url: this.baseurl + this.tasks[index].app + '/' + this.tasks[index].name + '.flv',
             // type: 'flv'
           }
         }
       );
       // console.log(this.baseurl + this.task[index].app + '/' + this.task[index].name);
       this.dp.push(player);
+      }
       // console.log(this.dp);
     });
   }
 
 
   ngAfterViewInit() {
-    this.initPlayer();
+    // this.initPlayer();
+  }
 
-    console.log(this.dplayer);
+  ngAfterViewChecked(): void {
+    if (this.dplayer.length !== this.layoutcache) {
+      this.initPlayer();
+      this.layoutcache = this.dplayer.length;
+    }
   }
 }

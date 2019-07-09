@@ -1,6 +1,6 @@
 {
-  "name": "angular-electron",
-  "version": "6.0.1",
+  "name": "Dcam",
+  "version": "0.0.1",
   "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
   "homepage": "https://github.com/maximegris/angular-electron",
   "author": {
@@ -17,6 +17,8 @@
   "main": "main.js",
   "private": true,
   "scripts": {
+    "servertest": "ts-node server.ts",
+    "servertest2": "node server2.js",
     "postinstall": "npm run postinstall:electron && electron-builder install-app-deps",
     "postinstall:web": "node postinstall-web",
     "postinstall:electron": "node postinstall",
@@ -73,7 +75,7 @@
     "npm-run-all": "4.1.5",
     "rxjs": "6.5.2",
     "spectron": "5.0.0",
-    "ts-node": "7.0.1",
+    "ts-node": "^8.3.0",
     "tslint": "5.17.0",
     "typescript": "3.4.5",
     "wait-on": "3.2.0",
@@ -82,5 +84,19 @@
   },
   "engines": {
     "node": ">=10.9.0"
+  },
+  "dependencies": {
+    "@types/dplayer": "^1.25.0",
+    "@types/fluent-ffmpeg": "^2.1.10",
+    "@types/koa": "^2.0.49",
+    "@types/koa-router": "^7.0.42",
+    "dplayer": "^1.25.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "node-media-server": "^2.1.2",
+    "primeflex": "^1.0.0-rc.1",
+    "primeicons": "^1.0.0",
+    "primeng": "^8.0.0"
   }
 }

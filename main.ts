@@ -1,6 +1,9 @@
-import { app, BrowserWindow, screen } from 'electron';
+import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+// import {fork} from 'child_process';
+const NodeMediaServer = require('node-media-server');
+const fs = require('fs');
 
 let win, serve;
 const args = process.argv.slice(1);
@@ -21,7 +24,7 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
-
+  win.setMenuBarVisibility(false);
   if (serve) {
     require('electron-reload')(__dirname, {
       electron: require(`${__dirname}/node_modules/electron`)
@@ -38,7 +41,6 @@ function createWindow() {
   if (serve) {
     win.webContents.openDevTools();
   }
-
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store window
@@ -50,6 +52,21 @@ function createWindow() {
 }
 
 try {
+  // fork('./server2.js', [], {
+  //   cwd: __dirname,
+  //   env: process.env
+  // });
+
+  const f = fs.readFileSync('./config/config.json');
+  const config = JSON.parse(f);
+
+  const start = async () => {
+    const nms = new NodeMediaServer(config);
+    nms.run();
+    console.log('start');
+  };
+
+  start();
 
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.

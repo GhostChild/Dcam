@@ -25,9 +25,18 @@
               "src/favicon.512x512.png"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/nova-colored/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/dash.all.min.js",
+              "src/assets/flv.min.js",
+              "src/assets/hls.min.js"
+
+            ]
           },
           "configurations": {
             "dev": {

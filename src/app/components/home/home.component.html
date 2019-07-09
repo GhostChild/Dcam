@@ -1,5 +1,14 @@
-<div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+<div class="ui-g layout">
+  <div class="ui-g-12 layout-header" id="header">
+      <span>xxxxxx</span>
+  </div>
+  <div class="ui-g-12 layout-content" id="content">
+    <!--<div #dplayer>player</div>-->
+    <!--<div #dplayer2>player</div>-->
+    <!--<div #dplayer3>player</div>-->
+    <!--<div #dplayer4>player</div>-->
+    <div *ngFor="let r of row" class="p-grid videogrid">
+      <div *ngFor="let c of col" class="p-col video" #palyer>col</div>
+    </div>
+  </div>
 </div>

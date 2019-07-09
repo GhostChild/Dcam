@@ -1,6 +1,12 @@
 <div class="ui-g layout">
   <div class="ui-g-12 layout-header" id="header">
-      <span>xxxxxx</span>
+    <div class="p-grid p-align-center" >
+      <span class="p-col">行</span>
+      <p-spinner class="p-col" size="2" [(ngModel)]="rownum" [min]="1" [max]="6"></p-spinner>
+      <span class="p-col">列</span>
+      <p-spinner class="p-col" size="2" [(ngModel)]="colnum" [min]="1" [max]="10"></p-spinner>
+      <button pButton type="button" icon="pi pi-check" (click)="setLayout()"></button>
+    </div>
   </div>
   <div class="ui-g-12 layout-content" id="content">
     <!--<div #dplayer>player</div>-->

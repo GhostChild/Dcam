@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {ipcRenderer} from 'electron';
 import DPlayer from 'dplayer';
 
 @Component({
@@ -11,6 +12,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor() {
   }
 
+  rownum = 4;
+  colnum = 4;
   row = [...Array(4)];
   col = [...Array(4)];
 
@@ -46,6 +49,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   dp: DPlayer[] = [];
 
   ngOnInit() {
+    // ipcRenderer.send('getplayerconfig');
+    //
+    // ipcRenderer.on('setplayerconfig', (eveng, arg) => {
+    //   console.log(arg);
+    //   this.row = [...Array(arg.row)];
+    //   this.col = [...Array(arg.col)];
+    // });
     // this.dp = new DPlayer({
     //   container: this.dplayer.nativeElement,
     //   // live: true,
@@ -94,18 +104,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   baseurl = 'ws://localhost:8000/';
 
+  setLayout() {
+    this.row = [...Array(this.rownum)];
+    this.col = [...Array(this.colnum)];
+    this.initPlayer();
+    // console.log(this.dp);
+  }
+
   initPlayer() {
+    this.dp = [];
     this.dplayer.forEach((el: ElementRef, index) => {
       const player = new DPlayer({
           container: el.nativeElement,
           live: true,
-          autoplay: true,
+          // autoplay: true,
           mutex: false,
           video: {
             // url: 'https://api.dogecloud.com/player/get.flv?vcode=5ac682e6f8231991&userId=17&ext=.flv',
-            url: 'ws://localhost:8000/mv/hatsuyuki.flv',
+            // url: 'ws://localhost:8000/mv/hatsuyuki.flv',
+            url: '/assets/hatsuyuki.mp4',
             // url: this.baseurl + this.task[index].app + '/' + this.task[index].name + '.flv',
-            type: 'flv'
+            // type: 'flv'
           }
         }
       );
@@ -118,5 +137,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.initPlayer();
+
+    console.log(this.dplayer);
   }
 }

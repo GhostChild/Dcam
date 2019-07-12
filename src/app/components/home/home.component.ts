@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   col = [...Array(2)];
 
 
-  tasks = [];
+  tasks576p = [];
 
   @ViewChildren('palyer') dplayer: QueryList<ElementRef>;
 
@@ -67,7 +67,12 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
       this.setLayout();
     });
     ipcRenderer.on('setvideoconfig', (eveng, arg) => {
-      this.tasks = arg.relay.tasks;
+      arg.relay.tasks.forEach((task) => {
+        console.log(task);
+        if (task.app === '576p') {
+          this.tasks576p.push(task);
+        }
+      });
       // console.log(this.tasks);
       this.initPlayer();
     });
@@ -111,7 +116,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   initPlayer() {
     this.dp = [];
     this.dplayer.forEach((el: ElementRef, index) => {
-      if (index < this.tasks.length) {
+      if (index < this.tasks576p.length) {
+        console.log(this.tasks576p[index].name)
         const player = new DPlayer({
             container: el.nativeElement,
             live: true,
@@ -120,17 +126,19 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
             video: {
               // url: 'https://api.dogecloud.com/player/get.flv?vcode=5ac682e6f8231991&userId=17&ext=.flv',
               // url: 'ws://localhost:8000/mv/hatsuyuki.flv',
-              // url: '/assets/hatsuyuki.mp4',
+              // url: '/assets/test.mp4',
               // url: this.baseurl + this.tasks[index].app + '/' + this.tasks[index].name + '.flv',
-              url: `${this.baseurl}576p/${this.tasks[index].name}.flv`,
+              url: `${this.baseurl}576p/${this.tasks576p[index].name}.flv`,
               type: 'flv',
               quality: [{
                 name: '576p',
-                url: `${this.baseurl}576p/${this.tasks[index].name}.flv`,
+                url: `${this.baseurl}576p/${this.tasks576p[index].name}.flv`,
+                // url: '/assets/test.mp4',
                 type: 'flv'
               }, {
                 name: '1080p',
-                url: `${this.baseurl}1080p/${this.tasks[index].name}.flv`,
+                // url: '/assets/test.mp4',
+                url: `${this.baseurl}1080p/${this.tasks576p[index].name}.flv`,
                 type: 'flv'
               }],
               defaultQuality: 0,

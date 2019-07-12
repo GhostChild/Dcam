@@ -7,7 +7,7 @@ const fs = require('fs');
 // logger
 // const logStream = fs.createWriteStream('./log/logger.log', {flags: 'a'});
 // process.stdout.write = process.stderr.write = logStream.write.bind(logStream);
-
+// app.commandLine.appendSwitch('js-flags', '--max-old-space-size=700');
 //
 let win, serve;
 const args = process.argv.slice(1);
@@ -58,25 +58,20 @@ function createWindow() {
 }
 
 try {
-  // fork('./server2.js', [], {
-  //   cwd: __dirname,
-  //   env: process.env
-  // });
+  const f = fs.readFileSync('./config/config.json');
+  const videoconfig = JSON.parse(f);
 
-  // const f = fs.readFileSync('./config/config.json');
-  // const videoconfig = JSON.parse(f);
+  // const f = fs.readFileSync('./config/config.txt');
+  // const b = Buffer.from(f.toString(), 'base64').toString();
+  // const videoconfig = JSON.parse(b);
 
-  const f = fs.readFileSync('./config/config.txt');
-  const b = Buffer.from(f.toString(), 'base64').toString();
-  const videoconfig = JSON.parse(b);
+  // const start = async () => {
+  //   const nms = new NodeMediaServer(videoconfig);
+  //   nms.run();
+  //   console.log('start');
+  // };
 
-  const start = async () => {
-    const nms = new NodeMediaServer(videoconfig);
-    nms.run();
-    console.log('start');
-  };
-
-  start();
+  // start();
 
   ipcMain.on('getplayerconfig', (event) => {
     const playerconfig = JSON.parse(fs.readFileSync('./config/playerconfig.json'));

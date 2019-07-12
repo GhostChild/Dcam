@@ -1,20 +1,30 @@
 <div class="ui-g layout">
-  <div class="ui-g-12 layout-header" id="header">
+  <div class="ui-g-12 layout-header" #header>
+    <p-dialog header="设置布局" [(visible)]="dialogshow" [style]="{width: '250px', minWidth: '100px'}">
     <div class="p-grid p-align-center" >
       <span class="p-col">行</span>
       <p-spinner class="p-col" size="2" [(ngModel)]="rownum" [min]="1" [max]="6"></p-spinner>
       <span class="p-col">列</span>
       <p-spinner class="p-col" size="2" [(ngModel)]="colnum" [min]="1" [max]="10"></p-spinner>
-      <button pButton type="button" icon="pi pi-check" (click)="setLayout()"></button>
     </div>
+      <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="setLayout()" label="Yes"></button>
+            <button type="button" pButton icon="pi pi-close" (click)="dialogshow=false" label="No" class="ui-button-secondary"></button>
+        </p-footer>
+    </p-dialog>
+
   </div>
+  <p-contextMenu [target]="header" [model]="menu" ></p-contextMenu>
   <div class="ui-g-12 layout-content" id="content">
     <!--<div #dplayer>player</div>-->
     <!--<div #dplayer2>player</div>-->
     <!--<div #dplayer3>player</div>-->
     <!--<div #dplayer4>player</div>-->
     <div *ngFor="let r of row" class="p-grid videogrid">
-      <div *ngFor="let c of col" class="p-col video" #palyer></div>
+      <div *ngFor="let c of col"
+           class="p-col video"
+           [ngClass]="layoutClass"
+           #palyer></div>
     </div>
   </div>
 </div>

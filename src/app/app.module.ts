@@ -20,6 +20,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import {ButtonModule} from 'primeng/button';
 import {SpinnerModule} from 'primeng/spinner';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {DialogModule} from 'primeng/dialog';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -39,6 +42,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     ButtonModule,
     SpinnerModule,
+    ContextMenuModule,
+    DialogModule,
+    BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -1,4 +1,5 @@
 {
+  "logType": 3,
   "rtmp": {
     "port": 1935,
     "chunk_size": 60000,
@@ -15,25 +16,91 @@
     "ffmpeg": "./ffmpeg/ffmpeg.exe",
     "tasks": [
       {
-        "app": "mv",
+        "app": "576p",
         "mode": "static",
-        "edge": "./src/assets/haku0.mp4",
-        "name": "haku0"
+        "edge": "./src/assets/test.mp4",
+        "name": "test1"
+      },
+    {
+        "app": "1080p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test1"
       },{
-        "app": "mv",
+        "app": "576p",
         "mode": "static",
-        "edge": "./src/assets/haku0.mp4",
-        "name": "haku0"
+        "edge": "./src/assets/test.mp4",
+        "name": "test2"
       },{
-        "app": "mv",
+        "app": "576p",
         "mode": "static",
-        "edge": "./src/assets/haku0.mp4",
-        "name": "haku0"
+        "edge": "./src/assets/test.mp4",
+        "name": "test3"
       },{
-        "app": "mv",
+        "app": "576p",
         "mode": "static",
-        "edge": "./src/assets/haku0.mp4",
-        "name": "haku0"
+        "edge": "./src/assets/test.mp4",
+        "name": "test4"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test5"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test6"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test7"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test8"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test9"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test10"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test11"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test12"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test13"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test14"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test15"
+      },{
+        "app": "576p",
+        "mode": "static",
+        "edge": "./src/assets/test.mp4",
+        "name": "test16"
       }
     ]
   }

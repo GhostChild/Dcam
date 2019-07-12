@@ -2,11 +2,6 @@
   "name": "Dcam",
   "version": "0.0.1",
   "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
-  "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
-  },
   "keywords": [
     "angular",
     "angular 8",
@@ -86,6 +81,7 @@
     "node": ">=10.9.0"
   },
   "dependencies": {
+    "@angular/animations": "^8.1.1",
     "@types/dplayer": "^1.25.0",
     "@types/fluent-ffmpeg": "^2.1.10",
     "@types/koa": "^2.0.49",

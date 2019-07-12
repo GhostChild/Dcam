@@ -1,10 +1,14 @@
-import {app, BrowserWindow, screen, ipcMain} from 'electron';
+import {app, BrowserWindow, screen, ipcMain, globalShortcut} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 // import {fork} from 'child_process';
 const NodeMediaServer = require('node-media-server');
 const fs = require('fs');
+// logger
+// const logStream = fs.createWriteStream('./log/logger.log', {flags: 'a'});
+// process.stdout.write = process.stderr.write = logStream.write.bind(logStream);
 
+//
 let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
@@ -25,6 +29,8 @@ function createWindow() {
     },
   });
   win.setMenuBarVisibility(false);
+  win.setFullScreenable(true);
+  win.setFullScreen(true);
   if (serve) {
     require('electron-reload')(__dirname, {
       electron: require(`${__dirname}/node_modules/electron`)
@@ -57,8 +63,12 @@ try {
   //   env: process.env
   // });
 
-  const f = fs.readFileSync('./config/config.json');
-  const videoconfig = JSON.parse(f);
+  // const f = fs.readFileSync('./config/config.json');
+  // const videoconfig = JSON.parse(f);
+
+  const f = fs.readFileSync('./config/config.txt');
+  const b = Buffer.from(f.toString(), 'base64').toString();
+  const videoconfig = JSON.parse(b);
 
   const start = async () => {
     const nms = new NodeMediaServer(videoconfig);
@@ -80,6 +90,12 @@ try {
   // Some APIs can only be used after this event occurs.
   app.on('ready', createWindow);
 
+  // app.on('ready', () => {
+  //   globalShortcut.register('F11', () => {
+  //     console.log('pressed')
+  //     win.setFullScreen();
+  //   });
+  // });
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar
@@ -101,3 +117,4 @@ try {
   // Catch Error
   // throw e;
 }
+

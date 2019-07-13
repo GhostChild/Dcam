@@ -1,18 +1,26 @@
-import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit, ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnChanges,
+  OnInit,
+  QueryList, SimpleChanges,
+  ViewChildren
+} from '@angular/core';
 import {ipcRenderer, remote} from 'electron';
 import DPlayer from 'dplayer';
 import {MenuItem} from 'primeng/api';
-import * as url from 'url';
-import * as path from 'path';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked, OnChanges {
 
-  constructor() {
+  constructor(private cdf: ChangeDetectorRef) {
   }
 
   menu: MenuItem[] = [
@@ -36,27 +44,30 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     }
   ];
   dialogshow = false;
-  rownum = 4;
-  colnum = 4;
-  layoutcache = 0;
-  row = [...Array(2)];
-  col = [...Array(2)];
-
-
+  rownum = 3;
+  colnum = 3;
+  // row = [...Array(2)];
+  // col = [...Array(2)];
+  // get total() {
+  //   return [...Array(this.rownum * this.colnum)];
+  // }
+  total = new BehaviorSubject([]);
   tasks576p = [];
 
-  @ViewChildren('palyer') dplayer: QueryList<ElementRef>;
+  @ViewChildren('palyer')
+  dplayer: QueryList<ElementRef>;
 
   dp: DPlayer[] = [];
 
   baseurl = 'ws://localhost:8000/';
-  layoutClass: {};
-
   win = remote.BrowserWindow;
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges');
+    // throw new Error('Method not implemented.');
+  }
+
   ngOnInit() {
-    ipcRenderer.send('getplayerconfig');
-    ipcRenderer.send('getvideoconfig');
 
     ipcRenderer.on('setplayerconfig', (eveng, arg) => {
       // console.log(arg);
@@ -65,59 +76,46 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
       // this.row = [...Array(arg.row)];
       // this.col = [...Array(arg.col)];
       this.setLayout();
+      this.initPlayer();
+      this.cdf.detectChanges();
     });
     ipcRenderer.on('setvideoconfig', (eveng, arg) => {
       arg.relay.tasks.forEach((task) => {
-        console.log(task);
+        // console.log(task);
         if (task.app === '576p') {
           this.tasks576p.push(task);
         }
       });
       // console.log(this.tasks);
       this.initPlayer();
+      this.cdf.detectChanges();
     });
+    ipcRenderer.send('getplayerconfig');
+    ipcRenderer.send('getvideoconfig');
+  }
+
+  customTB(index, song) {
+    console.log('tb', `${index}-${song}`);
+    return `${index}-${song}`;
   }
 
   setLayout() {
-    this.row = [...Array(this.rownum)];
-    this.col = [...Array(this.colnum)];
-    switch (this.rownum) {
-      case 2:
-        this.layoutClass = {
-          'video-h2': true
-        };
-        break;
-      case 3:
-        this.layoutClass = {
-          'video-h3': true
-        };
-        break;
-      case 4:
-        this.layoutClass = {
-          'video-h4': true
-        };
-        break;
-      case 5:
-        this.layoutClass = {
-          'video-h5': true
-        };
-        break;
-      case 6:
-        this.layoutClass = {
-          'video-h6': true
-        };
-        break;
-    }
+    console.log('setLayout');
+    console.log('this.rownum', this.rownum);
+    console.log('this.colnum', this.colnum);
+    const num = this.rownum * this.colnum;
+    this.total.next(Array.from({length: num}, (_, i) => i));
+    // console.log('this.total', this.total.length);
+    document.documentElement.style.setProperty('--rowNum', `${this.rownum}`);
+    document.documentElement.style.setProperty('--colNum', `${this.colnum}`);
     this.dialogshow = false;
-    // this.initPlayer();
-    // console.log(this.dp);
   }
 
   initPlayer() {
     this.dp = [];
     this.dplayer.forEach((el: ElementRef, index) => {
       if (index < this.tasks576p.length) {
-        console.log(this.tasks576p[index].name)
+        console.log(this.tasks576p[index].name);
         const player = new DPlayer({
             container: el.nativeElement,
             live: true,
@@ -173,10 +171,10 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.dplayer.length !== this.layoutcache) {
-      this.setLayout();
-      this.initPlayer();
-      this.layoutcache = this.dplayer.length;
-    }
+    // this.setLayout();
+    // if (this.dplayer.length !== this.total.length) {
+    //   this.initPlayer();
+    // this.layoutcache = this.dplayer.length;
+    // }
   }
 }

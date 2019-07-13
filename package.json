@@ -86,11 +86,11 @@
     "@types/fluent-ffmpeg": "^2.1.10",
     "@types/koa": "^2.0.49",
     "@types/koa-router": "^7.0.42",
-    "dplayer": "^1.25.0",
+    "dplayer": "git+ssh://git@github.com/GhostChild/DPlayer.git",
     "fluent-ffmpeg": "^2.1.2",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
-    "node-media-server": "^2.1.2",
+    "node-media-server": "git+ssh://git@github.com/GhostChild/Node-Media-Server.git",
     "primeflex": "^1.0.0-rc.1",
     "primeicons": "^1.0.0",
     "primeng": "^8.0.0"

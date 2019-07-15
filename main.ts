@@ -4,6 +4,7 @@ import * as url from 'url';
 // import {fork} from 'child_process';
 const NodeMediaServer = require('node-media-server');
 const fs = require('fs');
+const playerconfig = JSON.parse(fs.readFileSync('./config/playerconfig.json'));
 // logger
 // const logStream = fs.createWriteStream('./log/logger.log', {flags: 'a'});
 // process.stdout.write = process.stderr.write = logStream.write.bind(logStream);
@@ -17,11 +18,19 @@ function createWindow() {
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-
+  // console.log(electronScreen.getPrimaryDisplay());
+  // console.log(electronScreen.getAllDisplays());
+  const screens = electronScreen.getAllDisplays();
+  let setscreens = 0;
+  if (playerconfig.display) {
+    setscreens = playerconfig.display;
+  }
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
+    // x: 0,
+    // y: 0,
+    x: screens[setscreens].bounds.x,
+    y: screens[setscreens].bounds.y,
     width: size.width,
     height: size.height,
     webPreferences: {
@@ -74,7 +83,7 @@ try {
   // start();
 
   ipcMain.on('getplayerconfig', (event) => {
-    const playerconfig = JSON.parse(fs.readFileSync('./config/playerconfig.json'));
+
     event.reply('setplayerconfig', playerconfig);
   });
   ipcMain.on('getvideoconfig', (event) => {
